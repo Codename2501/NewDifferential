@@ -1,0 +1,47 @@
+using System;
+
+namespace NewDifferential
+{
+    class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            _ = new Differential();
+        }
+    }
+    class Variable
+    {
+        public double fx, fxw, fxw2;//Function
+        public double n = 1.0;//value
+        public double da, da0;//delta a
+        public double dw;//delta w
+        public double x;
+        public double cos;
+        public double diff, diff2;
+        public double differential;
+    }
+    class Differential : Variable
+    {
+        public Differential()
+        {
+            Console.Write("\n\nFunction about n=[{0}] : Function = {1}\n", n, Function(n));
+            Console.Write("Normal Differential about n=[{0}] : Differential = {1}\n\n", n, (Function(n + 1.0e-8) - Function(n - 1.0e-8)) / 2.0e-8);
+
+            da = n * 1.0e-5;
+
+            fx = Function(n);
+            cos = Math.Sqrt(1.0 / (1.0 + fx * fx));
+            x = n / cos;
+            fxw = Function((x + da) * cos);
+            fxw2 = Function((x - da) * cos);
+            diff = (-cos * (fx * fx * fx - fx * fx * fxw + fx - fxw)) / (da);
+            diff2 = (cos * (fx * fx * fx - fx * fx * fxw2 + fx - fxw2)) / (da);
+            differential = (diff + diff2) / 2.0;
+            Console.Write("Computing For NewDefferential : n: {0} diff: {1} diff2: {2} differential : {3}\n", n, diff, diff2, differential);
+        }
+        public double Function(double x)
+        {
+            return x * x;
+        }
+    }
+}
