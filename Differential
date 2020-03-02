@@ -35,9 +35,8 @@ namespace NewDifferential
             x = n / cos;
             fxw = Function((x + da) * cos);
             fxw2 = Function((x - da) * cos);
-            diff = (-cos * (fx * fx * fx - fx * fx * fxw + fx - fxw)) / (da);
-            diff2 = (cos * (fx * fx * fx - fx * fx * fxw2 + fx - fxw2)) / (da);
-            return (diff + diff2) / 2.0;
+            diff = cos * (fxw - fxw2) * (1.0 + fx * fx)/(2.0*da);
+            return diff;
             
         }
         public double SecondDerivative()
