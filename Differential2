@@ -1,0 +1,69 @@
+using System;
+using System.Numerics;
+
+namespace NewDifferential
+{
+    class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            _ = new Differential();
+        }
+    }
+    class Variable
+    {
+        public Complex fx, fx2, fx3;//Function
+        public Complex n = 1.0;//value
+        public Complex da;//delta a
+        public Complex x;
+        public Complex cos,sin;
+        public Complex diff, diff2;
+    }
+    class Differential : Variable
+    {
+        public Differential()
+        {
+            Console.Write("\n\nFunction about n=[{0}] : Function = {1}\n", n, Function(n));
+            Console.Write("Normal Differential about n=[{0}] : Differential = {1},SecondDifferential = {2} \n\n", n, ((Function(n + 1.0e-8) - Function(n - 1.0e-8)) / 2.0e-8).Real, ((Function(n + 1.0e-4) - 2.0 * Function(n) + Function(n - 1.0e-4)) / 1.0e-8).Real);
+            Console.Write("Computing For NewDefferential : n: {0} FirstDerivative: {1} SecondDerivative: {2}\n", n, FirstDerivative().Real, SecondDerivative().Real);
+        }
+        public Complex FirstDerivative()
+        {
+            da = 1.0e-7;
+
+            fx = Function(n);
+            cos = Complex.Sqrt(1.0 / (1.0 + fx * fx));
+            sin = (fx * Complex.Sqrt(1.0 / (1.0 + fx* fx)));
+            var expplus = new Complex(cos.Real, sin.Real);
+            var expminus = new Complex(cos.Real, -sin.Real);
+            fx2 = Function(n+da*(Function2(expplus)+Function2(expminus)+Function2(expplus*expminus)));
+            fx3 = Function(n-da*(Function2(expminus)+Function2(expplus)+Function2(expminus*expplus)));
+            diff = (fx2 - fx3) / (2 * da *(Function2(expplus)+Function2(expminus)+Function2(expplus*expminus)));
+            return Math.Sqrt(diff.Real * diff.Real + diff.Imaginary * diff.Imaginary);
+
+        }
+        public Complex SecondDerivative()// => Not so good.
+        {
+            da = 1.0e-5;
+
+            fx = Function(n);
+            cos = Complex.Sqrt(1.0 / (1.0 + fx * fx));
+            sin = (fx * Complex.Sqrt(1.0 / (1.0 + fx * fx)));
+            var expplus = new Complex(cos.Real, sin.Real);
+            var expminus = new Complex(cos.Real, -sin.Real);
+            fx2 = Function(n + da * (Function2(expplus) + Function2(expminus) + Function2(expplus * expminus)));
+            fx3 = Function(n - da * (Function2(expminus) + Function2(expplus) + Function2(expminus * expplus)));
+            diff2 = (fx2 + fx3 -2*fx) / (da * da * (Function2(expplus) + Function2(expminus) + Function2(expplus * expminus))* (Function2(expplus) + Function2(expminus) + Function2(expplus * expminus)));
+            return Math.Sqrt(diff2.Real * diff2.Real + diff2.Imaginary * diff2.Imaginary);
+        }
+        public Complex Function(Complex x)
+        {
+            return Complex.Exp(x);
+        }
+        public Complex Function2(Complex x)
+        {
+
+            return Complex.Pow(Function(Complex.Abs(x)),Function(Complex.Abs(x)));
+        }
+    }
+}
