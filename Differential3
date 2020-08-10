@@ -1,0 +1,46 @@
+using System;
+using System.Reflection.Metadata.Ecma335;
+using System.Xml;
+
+namespace AboutIntegral
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            _ = new Integral();
+        }
+    }
+    class Variables
+    {
+        public double fx,fx1,fx2, cos, sin,cos2,sin2,cos3,sin3,da;
+    }
+    class Integral:Variables
+    {
+        public Integral()
+        {
+            da = 1.0e-10;
+            for (double x = 0.0; x <= 2.0; x += 0.01)
+            {
+                fx = Function(x);
+                cos = Math.Sqrt(1.0 / (1.0 + fx * fx));
+                sin = fx * Math.Sqrt(1.0 / (1.0 + fx * fx));
+                cos2 = cos * cos - sin * sin;
+                sin2 = 2 * sin * cos;
+                cos3 = 4 * cos * cos * cos - 3 * cos;
+                sin3 = 3 * sin - 4 * sin * sin * sin;
+
+                fx1 = Function(x - da * (sin + cos - sin2 - cos2 - sin3 - cos3));
+                fx2 = Function(x + da * (sin + cos - sin2 - cos2 - sin3 - cos3));
+
+
+                Console.WriteLine("{0} {1} {2} {3} {4} {5}", Math.Cos(Math.Atan(fx)), cos, Math.Sin(Math.Atan(fx)), sin,Function(x), (fx2 - fx1) / (2.0*da * (sin + cos - sin2 - cos2 - sin3 - cos3)));
+            }
+        }
+
+        public double Function(double x)
+        {
+            return Math.Exp(x);
+        }
+    }
+}
