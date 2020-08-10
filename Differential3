@@ -2,24 +2,24 @@ using System;
 using System.Reflection.Metadata.Ecma335;
 using System.Xml;
 
-namespace AboutIntegral
+namespace Differential3
 {
     class Program
     {
         static void Main(string[] args)
         {
-            _ = new Integral();
+            _ = new Differential();
         }
     }
     class Variables
     {
         public double fx,fx1,fx2, cos, sin,cos2,sin2,cos3,sin3,da;
     }
-    class Integral:Variables
+    class Differential:Variables
     {
-        public Integral()
+        public Differential()
         {
-            da = 1.0e-10;
+            da = 1.0e-8;
             for (double x = 0.0; x <= 2.0; x += 0.01)
             {
                 fx = Function(x);
