@@ -11,7 +11,7 @@ namespace Differential3
     }
     class Variables
     {
-        public double fx,fx2, cos, sin,cos2,sin2,da;
+        public double fx,fx2, cos, sin,cos2,sin2,da,n;
     }
     class Differential:Variables
     {
