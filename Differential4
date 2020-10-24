@@ -1,0 +1,43 @@
+using System;
+
+namespace Differential3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            _ = new Differential();
+        }
+    }
+    class Variables
+    {
+        public double fx,fx2, cos, sin,cos2,sin2,da;
+    }
+    class Differential:Variables
+    {
+        public Differential()
+        {
+            da = 1.0e-13;
+            n = 1.0;
+
+            fx = Function(n);
+            cos = Math.Sqrt(1.0 / (1.0 + fx * fx));
+            sin = fx * Math.Sqrt(1.0 / (1.0 + fx * fx));
+            x1 = n + da / 2 * (cos + sin);
+            
+            fx2 = Function(n+da/2*(cos+sin));
+            cos2 = Math.Sqrt(1.0 / (1.0 + fx2 * fx2));
+            sin2 = fx2 * Math.Sqrt(1.0 / (1.0 + fx2 * fx2));
+            x2 = x1 + da / 2 * (cos2 + sin2);
+            
+            diff1 = (fx2 - fx) / (x2 - x1);
+            
+            Console.WriteLine("{0}",diff1);
+        }
+
+        public double Function(double x)
+        {
+            return x*x;
+        }
+    }
+}
