@@ -17,7 +17,7 @@ namespace Differential3
     {
         public Differential()
         {
-            da = 1.0e-13;
+            da = 1.0e-14;
             n = 1.0;
 
             fx = Function(n);
@@ -25,7 +25,7 @@ namespace Differential3
             sin = fx * Math.Sqrt(1.0 / (1.0 + fx * fx));
             x1 = n + da / 2 * (cos + sin);
             
-            fx2 = Function(n+da/2*(cos+sin));
+            fx2 = Function(x1);
             cos2 = Math.Sqrt(1.0 / (1.0 + fx2 * fx2));
             sin2 = fx2 * Math.Sqrt(1.0 / (1.0 + fx2 * fx2));
             x2 = x1 + da / 2 * (cos2 + sin2);
@@ -37,7 +37,7 @@ namespace Differential3
 
         public double Function(double x)
         {
-            return x*x;
+            return x*x+1;
         }
     }
 }
