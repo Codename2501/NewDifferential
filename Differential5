@@ -1,0 +1,51 @@
+using System;
+
+namespace NewDifferential5
+{
+    class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            _ = new Differential();
+        }
+    }
+    public class Variables
+    {
+        public double l,m,n,x,x1,fx,fx2,sin, sind, cos, cosd, diff, da,a;
+    }
+    public class Differential:Variables
+    {
+        public Differential()
+        {
+            da = 1.0e-12;
+            x = 1.0;
+            for (n = 0.0; n < 30.0; n++)
+            {
+                a = Function(x, n);
+                fx = Function(x, n) / a;
+                cos = Math.Sqrt(1.0 / (1.0 + fx * fx));
+                sin = fx * Math.Sqrt(1.0 / (1.0 + fx * fx));
+                x1 = x + da * (cos + sin)/2.0;
+
+                fx2 = Function(x1, n) / a;
+
+                l = (fx2 - fx) * (fx2 - fx) + (x1 - x) * (x1 - x);
+                sind = Math.Sqrt((fx2 - fx) * (fx2 - fx) / l);
+                //sind = Math.Sqrt((l - (x1 - x) * (x1 - x))/l);
+                //cosd = Math.Sqrt((x1 - x) * (x1 - x) / l);
+                cosd = Math.Sqrt(1.0 - sind * sind);
+                diff += Math.Sqrt(1 / (cosd * cosd) - 1.0) * a;
+            }
+            Console.WriteLine("{0}", diff);
+        }
+        public double Function(double x,double n)
+        {
+            m = 1.0;
+            for(int i = 1; i < n + 1; i++)
+            {
+                m *= i;
+            }
+            return Math.Pow(x,n)/m;
+        }
+    }
+}
