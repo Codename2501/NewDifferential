@@ -1,0 +1,55 @@
+using System;
+
+namespace NewDerivativeOf4thOrderAccuracy
+{
+    class MainClass
+    {
+        public static void Main(string[] args)
+        {
+            _ = new Differential();
+        }
+    }
+    public class Variables
+    {
+        public double da, x, x1,x11,x12,x2,x3,x4,x5,x6, fx, fx1,fx11,fx12, fx2,fx3,fx4,fx5,fx6, sin, cos, sin1, cos1,sin2,cos2,diff;
+        public double[] diff1 = new double[5];
+        public double[] diff2 = new double[5];
+    }
+    class Differential:Variables
+    {
+        public Differential()
+        {
+
+            da = 1.0e-3;
+            x = 1.0;
+            fx = Function(x);
+            cos = Math.Sqrt(1.0 / (1.0 + fx * fx));
+            sin = fx * Math.Sqrt(1.0 / (1.0 + fx * fx));
+            x1 = x + da * (sin + cos) / 2.0;//x+d1
+            x2 = x - da * (sin + cos) / 2.0;//x-d1
+
+            fx1 = Function(x1);
+            cos1 = Math.Sqrt(1.0 / (1.0 + fx1 * fx1));
+            sin1 = fx1 * Math.Sqrt(1.0 / (1.0 + fx1 * fx1));
+
+            fx2 = Function(x2);
+
+            x3 = x1 + da * (sin1 + cos1) / 2.0;//x+d1+d2
+            x4 = x1 - da * (sin1 + cos1) / 2.0;//x+d1-d2
+            x5 = x2 + da * (sin1 + cos1) / 2.0;//x-(d1-d2)
+            x6 = x2 - da * (sin1 + cos1) / 2.0;//x-(d1+d2)
+
+            fx3 = Function(x3);
+            fx4 = Function(x4);
+            fx5 = Function(x5);
+            fx6 = Function(x6);
+
+            diff = ((fx1 - fx2) * (2.0 + 6.0 * Math.Pow((x3 - x1) / (x1 - x), 2.0)) - (fx3 + fx4 - fx5 - fx6)) / (12.0 * Math.Pow(x3 - x1, 2.0) / (x1 - x));
+
+            Console.WriteLine(diff);
+        }
+        public double Function(double x) {
+            return Math.Exp(x);
+        }
+    }
+}
