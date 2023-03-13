@@ -1,0 +1,259 @@
+using System;
+using System.Data;
+using System.Numerics;
+
+namespace Differential
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Differential d = new Differential();
+            d.D();
+        }
+    }
+    class Differential
+    {
+        public void D()
+        {
+            double x = 0.0;
+            double a = 10.0;// (Math.Sin(x*Math.PI/180.0)+Math.Cos(x*Math.PI/180.0));
+            double sin, cos,sind,cosd, sin1, cos1, sin2, cos2, sin3, cos3, sin4, cos4;
+            double sin_1, cos_1, sin_2, cos_2, sin_3, cos_3, sin_4, cos_4;
+            double s1, s2, s3, s4, s_1, s_2, s_3, s_4, c1, c2, c3, c4, c_1, c_2, c_3, c_4;
+            double  b, b1, b2, b3, b4, b_1, b_2, b_3, b_4;
+            double diff1, diff2, sdiff1, sdiff2;
+            double bb, bb1, bb2, bb3, bb4, bb_1, bb_2, bb_3, bb_4;
+            double c, ch;// Math.Pow(Math.E,Math.PI);
+            double fx1, fx2, fx3, fx4, fx_1, fx_2, fx_3, fx_4;
+            double f1, f2, f3, f4, f_1, f_2, f_3, f_4;
+            double t, t1, t2, t3, t4, t_1, t_2, t_3, t_4;
+            double integral = Integral(x);
+            double fx = Function(x);
+            double diff = Diff(x);
+            double sdiff = SDiff(x);
+            double alpha = Math.Pow(2.0, -3);
+            double beta = Math.Pow(2.0, -5);
+            double gamma = 1.0e-4;
+            double delta = 1.0e-5;
+            double fxa, fxa2, fxb, fxb2, fxc;
+            double[] stac = new double[3];
+            double[] stac2 = new double[3];
+            int count = 0;
+            int count2 = 0;
+            double j = 0.0;
+            double k = 0.0;
+            double inte1,inte2;
+            sin = fx * Math.Sqrt(1.0 / (1.0 + fx * fx));
+            cos = Math.Sqrt(1.0 / (1.0 + fx * fx));
+            t = Math.Atan2(sin, cos);
+
+            b = alpha * (sin + cos) / 2.0;// *Math.Exp((sin)+(cos))/2.0;
+            bb = beta * (sin + cos) / 2.0;
+            c = 1.0;
+            ch = 16.0;
+            fxa = fxa2 = 1.0;
+            fxb = fxb2 = -1.0;
+            fxc = 0.0;
+
+            
+            for (int i = 1; i < 10000000; i++)
+            {
+
+                fx1 = Function(x + b);
+                f1 = Function(x + bb);
+                sin1 = fx1 * Math.Sqrt(1.0 / (1.0 + fx1 * fx1));
+                cos1 = Math.Sqrt(1.0 / (1.0 + fx1 * fx1));
+                s1 = f1 * Math.Sqrt(1.0 / (1.0 + f1 * f1));
+                c1 = Math.Sqrt(1.0 / (1.0 + f1 * f1));
+                t1 = Math.Atan2(sin1, cos1);
+                b1 = (sin1 + cos1) / 2.0;
+                bb1 = (s1 + c1) / 2.0;
+
+                fx2 = Function(x + 2.0 * b);
+                f2 = Function(x + 2.0 * bb);
+                sin2 = fx2 * Math.Sqrt(1.0 / (1.0 + fx2 * fx2));
+                cos2 = Math.Sqrt(1.0 / (1.0 + fx2 * fx2));
+                s2 = f2 * Math.Sqrt(1.0 / (1.0 + f2 * f2));
+                c2 = Math.Sqrt(1.0 / (1.0 + f2 * f2));
+                t2 = Math.Atan2(sin2, cos2);
+                b2 = (sin2 + cos2) / 2.0;
+                bb2 = (s2 + c2) / 2.0;
+
+                fx3 = Function(x + 3.0 * b);
+                f3 = Function(x + 3.0 * bb);
+                sin3 = fx3 * Math.Sqrt(1.0 / (1.0 + fx3 * fx3));
+                cos3 = Math.Sqrt(1.0 / (1.0 + fx3 * fx3));
+                s3 = f3 * Math.Sqrt(1.0 / (1.0 + f3 * f3));
+                c3 = Math.Sqrt(1.0 / (1.0 + f3 * f3));
+                t3 = Math.Atan2(sin3, cos3);
+                b3 = (sin3 + cos3) / 2.0;
+                bb3 = (s3 + c3) / 2.0;
+
+                fx4 = Function(x + 4.0 * b);
+                f4 = Function(x + 4.0 * bb);
+                sin4 = fx4 * Math.Sqrt(1.0 / (1.0 + fx4 * fx4));
+                cos4 = Math.Sqrt(1.0 / (1.0 + fx4 * fx4));
+                s4 = f4 * Math.Sqrt(1.0 / (1.0 + f4 * f4));
+                c4 = Math.Sqrt(1.0 / (1.0 + f4 * f4));
+                t4 = Math.Atan2(sin4, cos4);
+                b4 = (sin4 + cos4) / 2.0;
+                bb4 = (s4 + c4) / 2.0;
+
+                fx_1 = Function(x - b);
+                f_1 = Function(x - bb);
+                sin_1 = fx_1 * Math.Sqrt(1.0 / (1.0 + fx_1 * fx_1));
+                cos_1 = Math.Sqrt(1.0 / (1.0 + fx_1 * fx_1));
+                s_1 = f_1 * Math.Sqrt(1.0 / (1.0 + f_1 * f_1));
+                c_1 = Math.Sqrt(1.0 / (1.0 + f_1 * f_1));
+                t_1 = Math.Atan2(sin_1, cos_1);
+                b_1 = (sin_1 + cos_1) / 2.0;
+                bb_1 = (s_1 + c_1) / 2.0;
+
+                fx_2 = Function(x - 2.0 * b);
+                f_2 = Function(x - 2.0 * bb);
+                sin_2 = fx_2 * Math.Sqrt(1.0 / (1.0 + fx_2 * fx_2));
+                cos_2 = Math.Sqrt(1.0 / (1.0 + fx_2 * fx_2));
+                s_2 = f_2 * Math.Sqrt(1.0 / (1.0 + f_2 * f_2));
+                c_2 = Math.Sqrt(1.0 / (1.0 + f_2 * f_2));
+                t_2 = Math.Atan2(sin_2, cos_2);
+                b_2 = (sin_2 + cos_2) / 2.0;
+                bb_2 = (s_2 + c_2) / 2.0;
+
+                fx_3 = Function(x - 3.0 * b);
+                f_3 = Function(x - 3.0 * bb);
+                sin_3 = fx_3 * Math.Sqrt(1.0 / (1.0 + fx_3 * fx_3));
+                cos_3 = Math.Sqrt(1.0 / (1.0 + fx_3 * fx_3));
+                s_3 = f_3 * Math.Sqrt(1.0 / (1.0 + f_3 * f_3));
+                c_3 = Math.Sqrt(1.0 / (1.0 + f_3 * f_3));
+                t_3 = Math.Atan2(sin_3, cos_3);
+                b_3 = (sin_3 + cos_3) / 2.0;
+                bb_3 = (s_3 + c_3) / 2.0;
+
+                fx_4 = Function(x - 4.0 * b);
+                f_4 = Function(x - 4.0 * bb);
+                sin_4 = fx_4 * Math.Sqrt(1.0 / (1.0 + fx_4 * fx_4));
+                cos_4 = Math.Sqrt(1.0 / (1.0 + fx_4 * fx_4));
+                s_4 = f_4 * Math.Sqrt(1.0 / (1.0 + f_4 * f_4));
+                c_4 = Math.Sqrt(1.0 / (1.0 + f_4 * f_4));
+                t_4 = Math.Atan2(sin_4, cos_4);
+                b_4 = (sin_4 + cos_4) / 2.0;
+                bb_4 = (s_4 + c_4) / 2.0;
+                
+                b = alpha*(b1 + b2 + b3 + b4 + b_1 + b_2 + b_3 + b_4) / (8.0);
+                bb = beta*(bb1 + bb2 + bb3 +bb4+ bb_1 + bb_2 + bb_3+bb_4) / (8.0);
+                //fxa = (Function(x + b) - Function(x - b)) / (2.0*b);
+
+                fx1 = Function(x + 1.0 * b);
+                fx2 = Function(x + 2.0 * b);
+                fx3 = Function(x + 3.0 * b);
+                fx4 = Function(x + 4.0 * b);
+                fx_1 = Function(x - 1.0 * b);
+                fx_2 = Function(x - 2.0 * b);
+                fx_3 = Function(x - 3.0 * b);
+                fx_4 = Function(x - 4.0 * b);
+
+                diff1= (3.0 * fx_4 - 32.0 * fx_3 + 168.0 * fx_2 - 672.0 * fx_1 + 672.0 * fx1 - 168.0 * fx2 + 32.0 * fx3 - 3.0 * fx4) / (840.0 * b);
+                sdiff1 = (-9.0 * fx_4 + 128.0 * fx_3 - 1008.0 * fx_2 + 8064.0 * fx_1 - 14350.0 * fx + 8064.0 * fx1 - 1008.0 * fx2 + 128.0 * fx3 - 9.0 * fx4) / (5040 * b*b);
+
+                c = (3.0 * f_4 - 32.0 * f_3 + 168.0 * f_2 - 672.0 * f_1 + 672.0 * f1 - 168.0 * f2 + 32.0 * f3 - 3.0 * f4) / (840.0);
+
+                c1 = diff1 * Math.Sqrt(b * b * (1.0 + fx * fx) / (1.0 + diff1 * diff1));
+
+                f1 = Function(x + 1.0 * bb);
+                f2 = Function(x + 2.0 * bb);
+                f3 = Function(x + 3.0 * bb);
+                f4 = Function(x + 4.0 * bb);
+                f_1 = Function(x - 1.0 * bb);
+                f_2 = Function(x - 2.0 * bb);
+                f_3 = Function(x - 3.0 * bb);
+                f_4 = Function(x - 4.0 * bb);
+                /*f1 = Function(x + 1.0 * bb);
+                f2 = Function(x + 2.0 * bb);
+                f3 = Function(x + 3.0 * bb);
+                f4 = Function(x + 4.0 * bb);
+                f_1 = Function(x - 1.0 * bb);
+                f_2 = Function(x - 2.0 * bb);
+                f_3 = Function(x - 3.0 * bb);
+                f_4 = Function(x - 4.0 * bb);*/
+
+                diff2 = (3.0 * f_4 - 32.0 * f_3 + 168.0 * f_2 - 672.0 * f_1 + 672.0 * f1 - 168.0 * f2 + 32.0 * f3 - 3.0 * f4) / (840.0 * bb);
+                sdiff2 = (-9.0 * f_4 + 128.0 * f_3 - 1008.0 * f_2 + 8064.0 * f_1 - 14350.0 * fx + 8064.0 * f1 - 1008.0 * f2 + 128.0 * f3 - 9.0 * f4) / (5040 * bb*bb);
+
+                //sin = resolve * Math.Sqrt(1.0 / (1.0 + resolve * resolve));
+                //cos = Math.Sqrt(1.0 / (1.0 + resolve * resolve));
+                //Console.WriteLine("{0} {1} {2}", resolve, b, Diff(x));
+
+                //double fxb = ((sin+cos)*diff/2.0*3.0)*alpha+Function(x-alpha*(sin+cos)/2.0);
+                fxa = diff1;
+                fxb = diff2;
+
+                fxc = Math.Abs(fxa) - Math.Abs(diff);
+                if (fxa.CompareTo(fxb) == 0)
+                {
+                    count2++;
+                    Console.WriteLine("{0} {1} {2} {3} {4}", fxa, fxb, diff, sdiff, fxc);
+                }
+                if (count2 == 100)
+                {
+                    break;
+                }
+
+
+
+
+
+                fxc = Math.Abs(fxa) - Math.Abs(fxb);
+                //fxb += fxc;
+                //fxc = Function(x + l * (sin + cos) / 2.0);
+                //fxb = (Function(x + alpha * (sin + cos) / 2.0)) - ((sin + cos) * resolve / 2.0) * alpha;
+                //Console.WriteLine("{0} {1} {2}", fxa, fxb, fxa - fxb);
+
+                for (j = 100; j >= 0; j-=1)
+                {
+                    if (Math.Abs(fxc) < Math.Pow(2.0, -j))
+                    {
+                        gamma = Math.Pow(2.0, -j);
+                        break;
+                    }
+                }
+                alpha -= gamma;
+                beta += gamma;
+                //Console.WriteLine("{0} {1} {2} {3} {4}", fxa, fxb,fxa-fxb, gamma,j);
+                //fxc = fxa;
+                //a = alpha*(sin + cos) / 2.0;
+                //Console.WriteLine("{0} {1} {2} {3}", fxa, fxb, stac[0] - stac[1], fxa - fxb);
+            }
+        }
+        
+        public double Integral(double x)
+        {
+            return Math.Sin(x);
+        }
+        public double Function(double x)
+        {
+            return Math.Cos(x);
+        }
+        public double Diff(double x)
+        {
+            return -Math.Sin(x);
+        }
+        public double SDiff(double x)
+        {
+            return -Math.Cos(x);
+        }
+        public Complex cc(Complex x)
+        {
+            return Complex.Exp(-x.Real * Complex.ImaginaryOne) / 2.0 + Complex.Exp(x.Real * Complex.ImaginaryOne) / 2.0;
+        }
+        public Complex cs(Complex x)
+        {
+            return Complex.ImaginaryOne * (Complex.Exp(-x.Real * Complex.ImaginaryOne) / 2.0 - Complex.Exp(x.Real * Complex.ImaginaryOne) / 2.0);
+        }
+        public Complex cdiff(Complex x)
+        {
+            return (4.0 * Complex.Exp(2.0 * x.Real * Complex.ImaginaryOne)) / Complex.Pow(1.0 + Complex.Exp(2.0 * x.Real * Complex.ImaginaryOne), 2.0);
+        }
+    }
+}
+
